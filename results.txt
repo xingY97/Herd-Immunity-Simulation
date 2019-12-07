@@ -4,7 +4,3 @@ Population Size: 16
 Initial Vaccinated: 5
 Initial Healthy: 10
 Initial Infected: 1
-
-Simulation Ended after 0 turns
-Total Dead: 0
-Total Vaccinated: 5

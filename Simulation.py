@@ -14,6 +14,7 @@ class Simulation:
         self.total_infected = 0
         self.current_infected = 0
         self.newly_infected = []
+        self.number_infected = 0
 
         self.initial_healthy = initial_healthy
         self.initial_vaccinated = initial_vaccinated
@@ -24,6 +25,7 @@ class Simulation:
 
 
         self.total_dead = 0
+        self.newly_dead = 0
         self.total_vaccinated = initial_vaccinated
 
         self.file_writer = FileWriter(resultsfilename)
@@ -92,15 +94,7 @@ class Simulation:
 
         print(f'The simulation has ended after {time_step_counter} turns.')
         self.file_writer.write_results(time_step_counter, self.total_dead, self.total_vaccinated)
-
-    def determine_survival(self, infected):
-        '''Check if the current infected people survive their infection
-        Call the did_survive_infection() method
-        if it returns false then the person is no longer alive, does not have an infection and one is added to total dead
-        if it returns true then the person no longer has an infection and is vaccinated, one is added to total vaccinated'''
-        #TODO: finish this method
             
-
 
     def time_step(self, infected):
         ''' For every infected person interact with a random person from the population 10 times'''
@@ -108,20 +102,33 @@ class Simulation:
         #TODO: using the random index get a random person from the population
         #TODO: call interaction() with the current infected person and the random person
 
-        alive_population = [x for x in self.population if x.is_alive]
-        
-        for person in alive_population:
-            interaction = 0
-            if person.infection:
-                while interaction == 10:
-                    random_person = random.choice(alive_population)
-                    self.interaction(person,random_person)
-                    interaction += 1
+        self.newly_infected = []
+        self.newly_dead = 0
+        self.number_infected = 0
+        for person in self.population:
+
+            if not person.infection == None:
+                self.number_infected += 1
+                live_population_without_person = [] # People can't interact with themselves or dead people
+                for other_person in self.population:
+                    if not other_person._id == person._id and other_person.is_alive == True:
+                        live_population_without_person.append(other_person)
+                self.interaction(person, random.sample(live_population_without_person, 100))
+                random_person = random.uniform(0,1)
+
+                if random_person <= self.virus.mortality_rate:
+                    person.infection = None
+                    person.is_alive = False
+                    self.newly_dead += 1
+                    self.file_writer_infection(person,True)
+                else:
+                    person.is_vaccinated = True
+                    person.infection = None
+                    self.logger.log_infection_survival(person,False)
+        self.total_dead += self.newly_dead
+        self.total_infected += len(self.newly_infected)
 
             
-
-                
-
 
     def interaction(self, infected, random_person):
         '''If the infected person is the same object as the random_person return and do nothing

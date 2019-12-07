@@ -80,27 +80,15 @@ class Simulation:
         ''' This method should run the simulation until all requirements for ending
         the simulation are met.
         '''
-        
-        self.create_population()
-        random.shuffle(self.population)
-
-        self.print_population()
-        
+        print(f"--- Simulation Begins ---")
         time_step_counter = 0
-        should_continue = True
-
-        self.file_writer.init_file(self.virus, self.population_size, self.initial_vaccinated, self.initial_healthy, self.initial_infected)
-
-        #keep looping until the simulation ends
-        while self.simulation_should_continue():
-
-            #save the current infected
-            old_infected = self.get_infected()
-            self.time_step(old_infected)
-            #time step will create newly infected people, just determine the survivial of the previous infected people
-            self.determine_survival(old_infected)
-
-            time_step_counter += 1
+        should_continue = self.simulation_should_continue()
+        while should_continue:
+        
+            self.time_step()
+            self._infect_newly_infected()
+            self.file_writer.init_file(self.virus, self.population_size, self.initial_vaccinated, self.initial_healthy, self.initial_infected)
+            should_continue = self._simulation_should_continue()
 
         print(f'The simulation has ended after {time_step_counter} turns.')
         self.file_writer.write_results(time_step_counter, self.total_dead, self.total_vaccinated)

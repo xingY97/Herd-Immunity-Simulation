@@ -20,3 +20,11 @@ Total Vaccinated: 5
 Simulation Ended after 0 turns
 Total Dead: 0
 Total Vaccinated: 5
+
+Simulation Ended after 0 turns
+Total Dead: 0
+Total Vaccinated: 5
+
+Simulation Ended after 0 turns
+Total Dead: 0
+Total Vaccinated: 5

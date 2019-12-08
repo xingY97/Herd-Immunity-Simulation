@@ -124,25 +124,33 @@ class Simulation:
                 else:
                     person.is_vaccinated = True
                     person.infection = None
-                    self.logger.log_infection_survival(person,False)
+                    self.file_writer_infection_survival(person,False)
         self.total_dead += self.newly_dead
         self.total_infected += len(self.newly_infected)
 
             
 
-    def interaction(self, infected, random_person):
-        '''If the infected person is the same object as the random_person return and do nothing
-        if the random person is not alive return and do nothing
-        if the random person is vaccinated return and do nothing
-        if the random person is not vaccinated:
-            generate a random float between 0 and 1
-            if the random float is less then the infected person's virus reproduction number then the random person is infected
-            othersie the random person is vaccinated and one is added to the total vaccinated'''
-        #TODO: finish this method
+    #def interaction(self, infected, random_person):
+
+    def interaction(self, person, random_people_list):
+        for random_person in random_people_list:
+            if random_person.is_vaccinated == False:
+                if random_person.infection == None and random_person not in self.newly_infected: # If they're healthy but unvaccinated
+                    dice_roll = random.uniform(0,1)
+                    if dice_roll <= self.virus.repro_rate:
+                        self.newly_infected.append(random_person)
+                        self.file_writer_interaction(person, random_person, False,False,True)
+                    else:
+                        self.file_writer_interaction(person,random_person,False,False,False)
+                else:
+                    self.file_writer_interaction(person, random_person, True, False, False)
+                assert person.is_alive == True
+                assert random_person.is_alive == True
+            else:
+                self.file_writer_interaction(person, random_person, False, True, False)
+
         
 
-
-        
 
 
 if __name__ == "__main__":

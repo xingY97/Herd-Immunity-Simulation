@@ -1,3 +1,6 @@
+
+run in terminal:      <strong>python3 simulation.py Ebola 0.70 0.25 10000 0.90 10</strong>
+
 # Final Project: Herd Immunity Simulation
 
 ## Description

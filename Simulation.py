@@ -1,13 +1,13 @@
 import random, sys
-from Person import Person
-from Virus import Virus
-from FileWriter import FileWriter
+# random.seed(42)
+from person import Person
+from logger import Logger
+from virus import Virus
 
 
 class Simulation(object):
     def __init__(self, pop_size, vacc_percentage, virus, initial_infected=1):
-        
-        self.file_writer = FileWriter(resultsfilename)
+        self.logger = Logger('log.txt')
         self.population = [] # List of Person objects
         self.pop_size = pop_size # Int
         self.next_person_id = 0 # Int
@@ -16,7 +16,6 @@ class Simulation(object):
         self.total_infected = 0 # Int
         self.current_infected = 0 # Int
         self.vacc_percentage = vacc_percentage # float between 0 and 1
-
         self.total_dead = 0 # Int
         self.newly_infected = []
         self.newly_dead=0
@@ -115,7 +114,6 @@ if __name__ == "__main__":
         initial_infected = 1
 
     virus = Virus(virus_name, repro_rate, mortality_rate)
-
     sim = Simulation(pop_size,vacc_percentage,virus,initial_infected)
     sim.logger.write_metadata(pop_size,vacc_percentage,virus_name,mortality_rate,repro_rate)
     sim._create_population(initial_infected)

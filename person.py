@@ -1,4 +1,3 @@
-        
 import random
 from virus import Virus
 

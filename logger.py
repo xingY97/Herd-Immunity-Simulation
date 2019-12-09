@@ -38,24 +38,24 @@ class Logger(object):
         # event logged ends up on a separate line!
         pass
 
-    def log_interaction(self, person, random_person, random_person_sick=None,
-                        random_person_vacc=None, did_infect=None):
-        sequence=[random_person_sick,random_person_vacc,did_infect]
-        if sequence==[False, False, True]:
+    def log_interaction(self, person, random_person, random_person_sick = None,
+                        random_person_vacc = None, did_infect = None):
+        sequence = [random_person_sick,random_person_vacc,did_infect]
+        if sequence == [False, False, True]:
             with open(self.file_name,'a') as virus_log:
                 virus_log.write(f"{person._id} infected {random_person._id}.\n")
-        elif sequence==[False, False, False]:
+        elif sequence == [False, False, False]:
             with open(self.file_name,'a') as virus_log:
                 virus_log.write(f"{person._id} interacted with {random_person._id} but luckily did not infect them.\n")
-        elif sequence==[True, False, False]:
+        elif sequence == [True, False, False]:
             with open(self.file_name,'a') as virus_log:
                 virus_log.write(f"{person._id} interacted with {random_person._id}, who is already infected.\n")
-        elif sequence==[False, True, False]:
+        elif sequence == [False, True, False]:
             with open(self.file_name,'a') as virus_log:
                 virus_log.write(f"{person._id} interacted with {random_person._id}, who is vaccinated.\n")
 
     def log_infection_survival(self, person, did_die_from_infection):
-        if did_die_from_infection==True:
+        if did_die_from_infection == True:
             with open(self.file_name,'a') as virus_log:
                 virus_log.write(f"{person._id} died from infection.\n")
         else:

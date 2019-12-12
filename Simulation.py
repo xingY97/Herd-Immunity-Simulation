@@ -87,6 +87,7 @@ class Simulation(object):
             generate a random float between 0 and 1
             if the random float is less then the infected person's virus reproduction number then the random person is infected
             othersie the random person is vaccinated and one is added to the total vaccinated'''
+        
         for random_person in random_people_list:
             if random_person.is_vaccinated == False:
                 if random_person.infection == None and random_person not in self.newly_infected: # If they're healthy but unvaccinated
